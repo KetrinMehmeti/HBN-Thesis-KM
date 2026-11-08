@@ -1,0 +1,591 @@
+{
+  "schema_version": 1,
+  "target": "attention",
+  "data_path": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v1/data/df_ml.parquet",
+  "output_root": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v2_attention",
+  "region_name": "us-east-1",
+  "random_state": 42,
+  "primary_metric": "ccc",
+  "stages": [
+    {
+      "id": "01_task_screen",
+      "output_subdir": "01_task_screen_corrected",
+      "status": "ready",
+      "purpose": "Screen representative acquisition contexts with one robust representation and a small model set.",
+      "tasks": [
+        "RestingState",
+        "DespicableMe",
+        "symbolSearch",
+        "all_tasks"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "aggregate_sets": [
+        "mean_std"
+      ],
+      "models": [
+        "dummy",
+        "ridge",
+        "extratrees"
+      ],
+      "selectors": [
+        "none",
+        "f_regression",
+        "mutual_info"
+      ],
+      "outer_folds": 5,
+      "inner_folds": 3,
+      "n_trials": 10,
+      "include_confounds": true,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true
+    },
+    {
+      "id": "02_all_task_model_screen",
+      "output_subdir": "02_all_task_model_screen",
+      "status": "ready",
+      "purpose": "Compare every EEG task individually using the same compact and diverse model panel.",
+      "tasks": [
+        "RestingState",
+        "DespicableMe",
+        "DiaryOfAWimpyKid",
+        "ThePresent",
+        "FunwithFractals",
+        "symbolSearch",
+        "contrastChangeDetection_1",
+        "contrastChangeDetection_2",
+        "contrastChangeDetection_3",
+        "seqLearning6target",
+        "seqLearning8target",
+        "surroundSupp_1",
+        "surroundSupp_2"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "aggregate_sets": [
+        "mean_std"
+      ],
+      "models": [
+        "dummy",
+        "elasticnet",
+        "pls",
+        "extratrees",
+        "svr"
+      ],
+      "selectors": [
+        "none",
+        "f_regression",
+        "mutual_info"
+      ],
+      "outer_folds": 5,
+      "inner_folds": 2,
+      "n_trials": 4,
+      "include_confounds": true,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true
+    },
+    {
+      "id": "phase_a_cross_target_compact",
+      "output_root": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v3_cross_target",
+      "output_subdir": "phase_a_compact_rbf",
+      "status": "ready",
+      "purpose": "Validate the compact EEG feature benchmark consistently across all four psychopathology factors.",
+      "targets": [
+        "attention",
+        "p_factor",
+        "internalizing",
+        "externalizing"
+      ],
+      "tasks": [
+        "RestingState",
+        "DespicableMe",
+        "DiaryOfAWimpyKid",
+        "ThePresent",
+        "FunwithFractals",
+        "symbolSearch",
+        "contrastChangeDetection_1",
+        "contrastChangeDetection_2",
+        "contrastChangeDetection_3",
+        "seqLearning6target",
+        "seqLearning8target",
+        "surroundSupp_1",
+        "surroundSupp_2"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "aggregate_sets": [
+        "mean_only"
+      ],
+      "models": [
+        "dummy",
+        "elasticnet",
+        "pls",
+        "extratrees",
+        "svr"
+      ],
+      "selectors": [
+        "f_regression",
+        "mutual_info"
+      ],
+      "selector_k_max": 1000,
+      "svr_kernels": [
+        "rbf"
+      ],
+      "outer_folds": 5,
+      "inner_folds": 2,
+      "n_trials": 4,
+      "include_confounds": true,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true
+    },
+    {
+      "id": "phase_b1_input_ablation",
+      "output_root": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v4_phase_b1",
+      "output_subdir": "all_targets",
+      "status": "ready",
+      "purpose": "Measure the incremental predictive contribution of EEG features relative to age and sex across every target and task.",
+      "targets": [
+        "attention",
+        "p_factor",
+        "internalizing",
+        "externalizing"
+      ],
+      "tasks": [
+        "RestingState",
+        "DespicableMe",
+        "DiaryOfAWimpyKid",
+        "ThePresent",
+        "FunwithFractals",
+        "symbolSearch",
+        "contrastChangeDetection_1",
+        "contrastChangeDetection_2",
+        "contrastChangeDetection_3",
+        "seqLearning6target",
+        "seqLearning8target",
+        "surroundSupp_1",
+        "surroundSupp_2"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "aggregate_sets": [
+        "mean_only"
+      ],
+      "input_sets": [
+        "eeg_only",
+        "confounds_only",
+        "eeg_confounds"
+      ],
+      "models": [
+        "dummy",
+        "elasticnet",
+        "extratrees"
+      ],
+      "selectors": [
+        "f_regression",
+        "mutual_info"
+      ],
+      "selector_k_max": 1000,
+      "primary_metric": "neg_rmse",
+      "outer_folds": 5,
+      "inner_folds": 2,
+      "n_trials": 4,
+      "include_confounds": false,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true
+    },
+    {
+      "id": "phase_b2_aggregation_screen",
+      "output_root": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v5_phase_b2",
+      "output_subdir": "all_targets",
+      "status": "ready",
+      "purpose": "Compare every temporal aggregation and quantify whether removing highly correlated EEG features improves incremental prediction beyond age and sex.",
+      "targets": [
+        "attention",
+        "p_factor",
+        "internalizing",
+        "externalizing"
+      ],
+      "tasks": [
+        "RestingState",
+        "DespicableMe",
+        "DiaryOfAWimpyKid",
+        "ThePresent",
+        "FunwithFractals",
+        "symbolSearch",
+        "contrastChangeDetection_1",
+        "contrastChangeDetection_2",
+        "contrastChangeDetection_3",
+        "seqLearning6target",
+        "seqLearning8target",
+        "surroundSupp_1",
+        "surroundSupp_2"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "aggregate_sets": [
+        "mean_only",
+        "std_only",
+        "median_only",
+        "iqr_only",
+        "mean_std",
+        "median_iqr",
+        "central_tendency",
+        "variability",
+        "all"
+      ],
+      "input_sets": [
+        "eeg_confounds"
+      ],
+      "correlation_thresholds": [
+        "none",
+        0.95
+      ],
+      "models": [
+        "extratrees"
+      ],
+      "selectors": [
+        "f_regression",
+        "mutual_info"
+      ],
+      "selector_k_max": 1000,
+      "primary_metric": "neg_rmse",
+      "outer_folds": 5,
+      "inner_folds": 2,
+      "n_trials": 4,
+      "include_confounds": false,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true
+    },
+    {
+      "id": "phase_b3_model_smoke",
+      "output_root": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v6_phase_b3",
+      "output_subdir": "smoke_attention_ccd1_all_corr095_v2",
+      "status": "ready",
+      "purpose": "Time and validate the expanded B3 model panel on one deliberately high-dimensional representation before the full run.",
+      "targets": [
+        "attention"
+      ],
+      "tasks": [
+        "contrastChangeDetection_1"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "aggregate_sets": [
+        "all"
+      ],
+      "input_sets": [
+        "eeg_confounds"
+      ],
+      "correlation_thresholds": [
+        0.95
+      ],
+      "models": [
+        "ridge",
+        "pls",
+        "extratrees",
+        "randomforest",
+        "histgradientboosting",
+        "xgboost",
+        "svr"
+      ],
+      "selectors": [
+        "f_regression",
+        "mutual_info"
+      ],
+      "selector_k_max": 500,
+      "svr_kernels": [
+        "rbf"
+      ],
+      "primary_metric": "neg_rmse",
+      "outer_folds": 2,
+      "inner_folds": 2,
+      "n_trials": 2,
+      "include_confounds": false,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true,
+      "literal_all_aggregate_set": true
+    },
+    {
+      "id": "02_representation_screen",
+      "status": "decision_gate",
+      "purpose": "Compare feature families and aggregate sets only on contexts retained after stage 01.",
+      "selection_rule": "Retain at most two contexts with positive mean CCC, improvement over the dummy baseline, and acceptable fold stability."
+    },
+    {
+      "id": "03_robustness_confirmation",
+      "status": "decision_gate",
+      "purpose": "Confirm the selected protocol with more Optuna trials and a confound sensitivity analysis.",
+      "selection_rule": "Freeze model, representation and selector candidates before comparing include-confounds versus exclude-confounds."
+    },
+    {
+      "id": "04_transfer_to_other_targets",
+      "status": "decision_gate",
+      "purpose": "Apply the frozen protocol to p_factor, internalizing and externalizing.",
+      "selection_rule": "No protocol changes are allowed after examining non-attention target performance."
+    },
+    {
+      "status": "ready",
+      "purpose": "Compact B3 model comparison on all 13 tasks using two B2-retained representations.",
+      "tasks": [
+        "DespicableMe",
+        "DiaryOfAWimpyKid",
+        "FunwithFractals",
+        "RestingState",
+        "ThePresent",
+        "contrastChangeDetection_1",
+        "contrastChangeDetection_2",
+        "contrastChangeDetection_3",
+        "seqLearning6target",
+        "seqLearning8target",
+        "surroundSupp_1",
+        "surroundSupp_2",
+        "symbolSearch"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "input_sets": [
+        "eeg_confounds"
+      ],
+      "models": [
+        "ridge",
+        "pls",
+        "extratrees",
+        "randomforest",
+        "histgradientboosting",
+        "svr"
+      ],
+      "selectors": [
+        "f_regression",
+        "mutual_info"
+      ],
+      "selector_k_max": 500,
+      "svr_kernels": [
+        "rbf"
+      ],
+      "primary_metric": "neg_rmse",
+      "outer_folds": 5,
+      "inner_folds": 2,
+      "n_trials": 4,
+      "include_confounds": false,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true,
+      "strict_model_dependencies": true,
+      "id": "phase_b3_compact_attention",
+      "output_root": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v6_phase_b3",
+      "output_subdir": "compact_v1/attention",
+      "targets": [
+        "attention"
+      ],
+      "aggregate_sets": [
+        "std_only",
+        "mean_only"
+      ],
+      "correlation_thresholds": [
+        0.95
+      ]
+    },
+    {
+      "status": "ready",
+      "purpose": "Compact B3 model comparison on all 13 tasks using two B2-retained representations.",
+      "tasks": [
+        "DespicableMe",
+        "DiaryOfAWimpyKid",
+        "FunwithFractals",
+        "RestingState",
+        "ThePresent",
+        "contrastChangeDetection_1",
+        "contrastChangeDetection_2",
+        "contrastChangeDetection_3",
+        "seqLearning6target",
+        "seqLearning8target",
+        "surroundSupp_1",
+        "surroundSupp_2",
+        "symbolSearch"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "input_sets": [
+        "eeg_confounds"
+      ],
+      "models": [
+        "ridge",
+        "pls",
+        "extratrees",
+        "randomforest",
+        "histgradientboosting",
+        "svr"
+      ],
+      "selectors": [
+        "f_regression",
+        "mutual_info"
+      ],
+      "selector_k_max": 500,
+      "svr_kernels": [
+        "rbf"
+      ],
+      "primary_metric": "neg_rmse",
+      "outer_folds": 5,
+      "inner_folds": 2,
+      "n_trials": 4,
+      "include_confounds": false,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true,
+      "strict_model_dependencies": true,
+      "id": "phase_b3_compact_p_factor",
+      "output_root": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v6_phase_b3",
+      "output_subdir": "compact_v1/p_factor",
+      "targets": [
+        "p_factor"
+      ],
+      "aggregate_sets": [
+        "std_only",
+        "mean_only"
+      ],
+      "correlation_thresholds": [
+        "none"
+      ]
+    },
+    {
+      "status": "ready",
+      "purpose": "Compact B3 model comparison on all 13 tasks using two B2-retained representations.",
+      "tasks": [
+        "DespicableMe",
+        "DiaryOfAWimpyKid",
+        "FunwithFractals",
+        "RestingState",
+        "ThePresent",
+        "contrastChangeDetection_1",
+        "contrastChangeDetection_2",
+        "contrastChangeDetection_3",
+        "seqLearning6target",
+        "seqLearning8target",
+        "surroundSupp_1",
+        "surroundSupp_2",
+        "symbolSearch"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "input_sets": [
+        "eeg_confounds"
+      ],
+      "models": [
+        "ridge",
+        "pls",
+        "extratrees",
+        "randomforest",
+        "histgradientboosting",
+        "svr"
+      ],
+      "selectors": [
+        "f_regression",
+        "mutual_info"
+      ],
+      "selector_k_max": 500,
+      "svr_kernels": [
+        "rbf"
+      ],
+      "primary_metric": "neg_rmse",
+      "outer_folds": 5,
+      "inner_folds": 2,
+      "n_trials": 4,
+      "include_confounds": false,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true,
+      "strict_model_dependencies": true,
+      "id": "phase_b3_compact_internalizing",
+      "output_root": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v6_phase_b3",
+      "output_subdir": "compact_v1/internalizing",
+      "targets": [
+        "internalizing"
+      ],
+      "aggregate_sets": [
+        "mean_only",
+        "std_only"
+      ],
+      "correlation_thresholds": [
+        "none"
+      ]
+    },
+    {
+      "status": "ready",
+      "purpose": "Compact B3 model comparison on all 13 tasks using two B2-retained representations.",
+      "tasks": [
+        "DespicableMe",
+        "DiaryOfAWimpyKid",
+        "FunwithFractals",
+        "RestingState",
+        "ThePresent",
+        "contrastChangeDetection_1",
+        "contrastChangeDetection_2",
+        "contrastChangeDetection_3",
+        "seqLearning6target",
+        "seqLearning8target",
+        "surroundSupp_1",
+        "surroundSupp_2",
+        "symbolSearch"
+      ],
+      "feature_families": [
+        "all"
+      ],
+      "input_sets": [
+        "eeg_confounds"
+      ],
+      "models": [
+        "ridge",
+        "pls",
+        "extratrees",
+        "randomforest",
+        "histgradientboosting",
+        "svr"
+      ],
+      "selectors": [
+        "f_regression",
+        "mutual_info"
+      ],
+      "selector_k_max": 500,
+      "svr_kernels": [
+        "rbf"
+      ],
+      "primary_metric": "neg_rmse",
+      "outer_folds": 5,
+      "inner_folds": 2,
+      "n_trials": 4,
+      "include_confounds": false,
+      "min_subjects": 100,
+      "n_jobs": 1,
+      "resume": true,
+      "strict_model_dependencies": true,
+      "id": "phase_b3_compact_externalizing",
+      "output_root": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v6_phase_b3",
+      "output_subdir": "compact_v1/externalizing",
+      "targets": [
+        "externalizing"
+      ],
+      "aggregate_sets": [
+        "mean_only"
+      ],
+      "correlation_thresholds": [
+        0.95,
+        "none"
+      ]
+    }
+  ]
+}

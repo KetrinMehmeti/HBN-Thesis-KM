@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "phase": "phase_b2_aggregation_ablation_wearable4",
+  "description": "Aggregation ablation for two prespecified four-channel wearable montages. The full protocol exactly mirrors Muse Phase B2 and changes only the exact EGI channel prefixes.",
+  "feature_source": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v1/data/df_ml.parquet",
+  "configurations": {
+    "frontal_headband": {"Fp1": "E22", "Fp2": "E9", "F7": "E33", "F8": "E122"},
+    "temporal_ear_adjacent": {"T7": "E45", "T8": "E108", "TP9": "E57", "TP10": "E100"}
+  },
+  "channel_filter": "exact '<channel>_' prefix only",
+  "tasks": ["RestingState", "DespicableMe", "DiaryOfAWimpyKid", "ThePresent", "FunwithFractals", "symbolSearch", "contrastChangeDetection_1", "contrastChangeDetection_2", "contrastChangeDetection_3", "seqLearning6target", "seqLearning8target", "surroundSupp_1", "surroundSupp_2"],
+  "targets": ["attention", "p_factor", "internalizing", "externalizing"],
+  "feature_family": "all",
+  "aggregate_sets": ["mean_only", "std_only", "median_only", "iqr_only", "mean_std", "median_iqr", "central_tendency", "variability", "all"],
+  "input_set": "eeg_confounds",
+  "model": "extratrees",
+  "correlation_thresholds": ["none", 0.95],
+  "selectors": ["f_regression", "mutual_info"],
+  "selection_metric": "negative RMSE",
+  "outer_folds": 5,
+  "inner_folds": 2,
+  "optuna_trials": 4,
+  "random_state": 42,
+  "expected_combinations_per_target": 234,
+  "expected_fold_markers_per_target": 1170
+}

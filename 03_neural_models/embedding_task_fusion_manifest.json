@@ -1,0 +1,63 @@
+{
+  "phase": "E2B-task-fusion",
+  "version": "v1",
+  "purpose": "Test whether subject-level fusion of multiple EEG tasks improves prediction beyond single-task frozen embeddings.",
+  "input_prefix": "embedding_benchmark_v1/e2a0_frozen_inputs_v1",
+  "output_prefix": "embedding_benchmark_v1/e2b_task_fusion_v1/full_v1",
+  "targets": [
+    "attention",
+    "p_factor",
+    "internalizing",
+    "externalizing"
+  ],
+  "tasks": 13,
+  "fusion_strategies": {
+    "mean_available": "Equal-weight mean of all available task embeddings per subject.",
+    "task_concat": "Fixed-order concatenation of task embeddings; missing blocks are imputed inside each training fold."
+  },
+  "minimum_tasks_per_subject": 2,
+  "representations": [
+    "cbramod",
+    "biot",
+    "labram_128_spatial",
+    "eegpt_62_canonical",
+    "eegpt_128_spatial"
+  ],
+  "input_sets": [
+    "embedding_only",
+    "embedding_plus_covariates"
+  ],
+  "models": [
+    "ridge",
+    "elasticnet",
+    "pls",
+    "extratrees",
+    "histgradientboosting",
+    "svr_rbf"
+  ],
+  "covariates": [
+    "age",
+    "sex"
+  ],
+  "covariates_only_reference": "embedding_benchmark_v1/e2a_input_ablation_v1/full_v1",
+  "single_task_reference": "embedding_benchmark_v1/e2a_ml_probe_v2/full_v2",
+  "optimization_metric": "negative_rmse",
+  "reported_metrics": [
+    "pearson",
+    "spearman",
+    "r2",
+    "mae",
+    "rmse",
+    "ccc"
+  ],
+  "outer_folds": 5,
+  "inner_folds": 2,
+  "n_trials": 10,
+  "split_unit": "participant_id",
+  "combinations_per_target": 120,
+  "outer_folds_per_target": 600,
+  "total_combinations": 480,
+  "total_outer_folds": 2400,
+  "resume_from_done_markers": true,
+  "source_data_mutation": false
+}

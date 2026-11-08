@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "phase": "phase_b1_input_ablation_muse4",
+  "description": "Four-channel Muse replication of the classical ML input ablation. Covariates-only is excluded because it was completed previously.",
+  "feature_source": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v1/data/df_ml.parquet",
+  "channel_mapping": {"AF7": "E26", "AF8": "E2", "TP9": "E57", "TP10": "E100"},
+  "channel_filter": "exact '<channel>_' prefix only",
+  "tasks": [
+    "RestingState", "DespicableMe", "DiaryOfAWimpyKid", "ThePresent",
+    "FunwithFractals", "symbolSearch", "contrastChangeDetection_1",
+    "contrastChangeDetection_2", "contrastChangeDetection_3",
+    "seqLearning6target", "seqLearning8target", "surroundSupp_1",
+    "surroundSupp_2"
+  ],
+  "targets": ["attention", "p_factor", "internalizing", "externalizing"],
+  "aggregation": "mean_only",
+  "feature_family": "all",
+  "input_sets": ["eeg_only", "eeg_confounds"],
+  "excluded_input_set": "confounds_only",
+  "models": ["dummy", "elasticnet", "extratrees"],
+  "selectors_for_tuned_models": ["f_regression", "mutual_info"],
+  "selection_metric": "negative RMSE",
+  "outer_folds": 5,
+  "inner_folds": 2,
+  "optuna_trials": 4,
+  "random_state": 42,
+  "expected_combinations_per_target": 78,
+  "expected_fold_markers_per_target": 390
+}

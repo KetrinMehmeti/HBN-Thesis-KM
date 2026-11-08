@@ -1,0 +1,17 @@
+numpy
+pandas
+scipy
+scikit-learn
+optuna
+boto3
+s3fs
+pyarrow
+joblib
+matplotlib
+tqdm
+
+# Optional model backends. The benchmark skips them with a warning if absent.
+xgboost
+lightgbm
+catboost
+

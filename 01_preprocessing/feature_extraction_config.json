@@ -1,0 +1,60 @@
+{
+  "sfreq": 200,
+  "epoch_sec": 10,
+  "channel_naming": "E1..En",
+  "bands": {
+    "delta": [
+      1.0,
+      4.0
+    ],
+    "theta": [
+      4.0,
+      8.0
+    ],
+    "alpha": [
+      8.0,
+      13.0
+    ],
+    "beta": [
+      13.0,
+      30.0
+    ],
+    "gamma": [
+      30.0,
+      45.0
+    ]
+  },
+  "subject_task_aggregations": [
+    "mean",
+    "std",
+    "median",
+    "iqr"
+  ],
+  "input_bucket": "hbn-ica-tesi-ketrin",
+  "input_prefix": "ica_qamad_ready",
+  "output_bucket": "hbn-features-tesi-ketrin",
+  "output_prefix": "per_epoch",
+  "aggregate_prefix": "aggregated_subject_task",
+  "workers": 60,
+  "task_allowlist": [
+    "DespicableMe",
+    "DiaryOfAWimpyKid",
+    "FunwithFractals",
+    "RestingState",
+    "ThePresent",
+    "contrastChangeDetection_1",
+    "contrastChangeDetection_2",
+    "contrastChangeDetection_3",
+    "seqLearning6target",
+    "seqLearning8target",
+    "surroundSupp_1",
+    "surroundSupp_2",
+    "symbolSearch"
+  ],
+  "compute_entropy": true,
+  "compute_specparam": true,
+  "libraries_available": {
+    "antropy": true,
+    "specparam": true
+  }
+}

@@ -1,0 +1,64 @@
+{
+  "phase": "E2A-input-ablation",
+  "version": "v1",
+  "purpose": "Measure the incremental predictive value of frozen EEG embeddings beyond age and sex.",
+  "new_input_sets": [
+    "embedding_only",
+    "covariates_only"
+  ],
+  "combined_reference": "embedding_benchmark_v1/e2a_ml_probe_v2/full_v2",
+  "targets": [
+    "attention",
+    "p_factor",
+    "internalizing",
+    "externalizing"
+  ],
+  "tasks": 13,
+  "representations": [
+    "cbramod",
+    "biot",
+    "labram_128_spatial",
+    "eegpt_62_canonical",
+    "eegpt_128_spatial"
+  ],
+  "embedding_models": [
+    "ridge",
+    "elasticnet",
+    "pls",
+    "extratrees",
+    "histgradientboosting",
+    "svr_rbf"
+  ],
+  "covariate_models": [
+    "dummy",
+    "ridge",
+    "elasticnet",
+    "pls",
+    "extratrees",
+    "histgradientboosting",
+    "svr_rbf"
+  ],
+  "covariates": [
+    "age",
+    "sex"
+  ],
+  "optimization_metric": "negative_rmse",
+  "reported_metrics": [
+    "pearson",
+    "spearman",
+    "r2",
+    "mae",
+    "rmse",
+    "ccc"
+  ],
+  "outer_folds": 5,
+  "inner_folds": 2,
+  "n_trials": 10,
+  "split_unit": "participant_id",
+  "combinations_per_target": 481,
+  "outer_folds_per_target": 2405,
+  "total_combinations": 1924,
+  "total_outer_folds": 9620,
+  "resume_from_done_markers": true,
+  "source_data_mutation": false
+}

@@ -1,0 +1,56 @@
+{
+    "phase":  "E2A",
+    "version":  "full_v2",
+    "purpose":  "Compare frozen EEG embeddings with classical machine-learning regressors across every target and task.",
+    "input_set":  "embedding_plus_covariates",
+    "embedding_feature_rule":  "^embedding_\\d{4}$",
+    "embedding_norm_included":  false,
+    "targets":  [
+                    "attention",
+                    "p_factor",
+                    "internalizing",
+                    "externalizing"
+                ],
+    "tasks":  13,
+    "representations":  [
+                            "cbramod",
+                            "biot",
+                            "labram_128_spatial",
+                            "eegpt_62_canonical",
+                            "eegpt_128_spatial"
+                        ],
+    "models":  [
+                   "dummy",
+                   "ridge",
+                   "elasticnet",
+                   "pls",
+                   "extratrees",
+                   "histgradientboosting",
+                   "svr_rbf"
+               ],
+    "embedding_reductions":  [
+                                 "raw",
+                                 "pca"
+                             ],
+    "optimization_metric":  "negative_rmse",
+    "reported_metrics":  [
+                             "pearson",
+                             "spearman",
+                             "r2",
+                             "mae",
+                             "rmse",
+                             "ccc"
+                         ],
+    "outer_folds":  5,
+    "inner_folds":  2,
+    "n_trials":  10,
+    "split_unit":  "participant_id",
+    "combinations_per_target":  455,
+    "outer_folds_per_target":  2275,
+    "total_combinations":  1820,
+    "total_outer_folds":  9100,
+    "output_layout":  "representations/\u003crepresentation\u003e/target=\u003ctarget\u003e/task=\u003ctask\u003e/input=\u003cinput_set\u003e/model=\u003cmodel\u003e/",
+    "target_summary_layout":  "targets/\u003ctarget\u003e/summary/",
+    "resume_from_done_markers":  true,
+    "source_data_mutation":  false
+}

@@ -1,0 +1,28 @@
+{
+  "phase": "E1A",
+  "output_prefix": "embedding_benchmark_v1/e1a_frozen_v2",
+  "expected_subject_task_files": 14066,
+  "expected_native_epochs": 182809,
+  "shards": [
+    {
+      "shard_id": "shard-01",
+      "expected_epochs": 42984,
+      "tasks": ["RestingState", "contrastChangeDetection_3"]
+    },
+    {
+      "shard_id": "shard-02",
+      "expected_epochs": 48473,
+      "tasks": ["surroundSupp_1", "DespicableMe", "symbolSearch", "seqLearning6target"]
+    },
+    {
+      "shard_id": "shard-03",
+      "expected_epochs": 48042,
+      "tasks": ["contrastChangeDetection_1", "seqLearning8target", "FunwithFractals", "DiaryOfAWimpyKid"]
+    },
+    {
+      "shard_id": "shard-04",
+      "expected_epochs": 43310,
+      "tasks": ["surroundSupp_2", "contrastChangeDetection_2", "ThePresent"]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "phase": "phase_b3_compact_model_comparison_wearable4",
+  "description": "Compact model-family comparison for two prespecified four-channel wearable montages. For every configuration and target, the two exact Phase B2 aggregation/filter pairs with the highest mean outer-fold R2 across all 13 tasks are frozen before comparing model families.",
+  "feature_source": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v1/data/df_ml.parquet",
+  "phase_b2_source": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v8_wearable4/<configuration>/phase_b2_aggregation_ablation/",
+  "configurations": {
+    "frontal_headband": {"Fp1": "E22", "Fp2": "E9", "F7": "E33", "F8": "E122"},
+    "temporal_ear_adjacent": {"T7": "E45", "T8": "E108", "TP9": "E57", "TP10": "E100"}
+  },
+  "channel_filter": "exact '<channel>_' prefix only",
+  "tasks": ["RestingState", "DespicableMe", "DiaryOfAWimpyKid", "ThePresent", "FunwithFractals", "symbolSearch", "contrastChangeDetection_1", "contrastChangeDetection_2", "contrastChangeDetection_3", "seqLearning6target", "seqLearning8target", "surroundSupp_1", "surroundSupp_2"],
+  "targets": ["attention", "p_factor", "internalizing", "externalizing"],
+  "representation_selection_rule": "top two exact Phase B2 pairs by mean outer-fold R2 averaged across all 13 tasks",
+  "representations": {
+    "frontal_headband": {
+      "attention": [
+        {"aggregate_set": "std_only", "correlation_threshold": "none", "cross_task_mean_r2": 0.00933460},
+        {"aggregate_set": "iqr_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.00926036}
+      ],
+      "p_factor": [
+        {"aggregate_set": "iqr_only", "correlation_threshold": 0.95, "cross_task_mean_r2": -0.00396113},
+        {"aggregate_set": "variability", "correlation_threshold": 0.95, "cross_task_mean_r2": -0.00419134}
+      ],
+      "internalizing": [
+        {"aggregate_set": "iqr_only", "correlation_threshold": "none", "cross_task_mean_r2": 0.04730338},
+        {"aggregate_set": "iqr_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.04690401}
+      ],
+      "externalizing": [
+        {"aggregate_set": "iqr_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.03775272},
+        {"aggregate_set": "iqr_only", "correlation_threshold": "none", "cross_task_mean_r2": 0.03546659}
+      ]
+    },
+    "temporal_ear_adjacent": {
+      "attention": [
+        {"aggregate_set": "std_only", "correlation_threshold": "none", "cross_task_mean_r2": 0.00995117},
+        {"aggregate_set": "std_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.00959452}
+      ],
+      "p_factor": [
+        {"aggregate_set": "iqr_only", "correlation_threshold": 0.95, "cross_task_mean_r2": -0.00335987},
+        {"aggregate_set": "iqr_only", "correlation_threshold": "none", "cross_task_mean_r2": -0.00414541}
+      ],
+      "internalizing": [
+        {"aggregate_set": "median_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.04471437},
+        {"aggregate_set": "variability", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.04394388}
+      ],
+      "externalizing": [
+        {"aggregate_set": "iqr_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.03211978},
+        {"aggregate_set": "iqr_only", "correlation_threshold": "none", "cross_task_mean_r2": 0.03211898}
+      ]
+    }
+  },
+  "feature_family": "all",
+  "input_set": "eeg_confounds",
+  "models": ["ridge", "pls", "extratrees", "randomforest", "histgradientboosting", "svr"],
+  "svr_kernel": "rbf",
+  "selectors": ["f_regression", "mutual_info"],
+  "selector_k_max": 500,
+  "selection_metric": "negative RMSE",
+  "outer_folds": 5,
+  "inner_folds": 2,
+  "optuna_trials": 4,
+  "random_state": 42,
+  "expected_combinations_per_target": 156,
+  "expected_fold_markers_per_target": 780,
+  "expected_combinations_per_configuration": 624,
+  "expected_fold_markers_per_configuration": 3120
+}

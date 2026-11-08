@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "phase": "phase_b3_compact_model_comparison_muse4",
+  "description": "Four-channel Muse compact model comparison. All 13 tasks are retained; for each psychopathology target, the two Phase B2 representations with the highest mean outer-fold R2 averaged across tasks are fixed before comparing model families.",
+  "feature_source": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v1/data/df_ml.parquet",
+  "phase_b2_source": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v7_muse4/phase_b2_aggregation_ablation/",
+  "channel_mapping": {"AF7": "E26", "AF8": "E2", "TP9": "E57", "TP10": "E100"},
+  "channel_filter": "exact '<channel>_' prefix only",
+  "tasks": ["RestingState", "DespicableMe", "DiaryOfAWimpyKid", "ThePresent", "FunwithFractals", "symbolSearch", "contrastChangeDetection_1", "contrastChangeDetection_2", "contrastChangeDetection_3", "seqLearning6target", "seqLearning8target", "surroundSupp_1", "surroundSupp_2"],
+  "targets": ["attention", "p_factor", "internalizing", "externalizing"],
+  "representation_selection_rule": "top two Phase B2 representations by mean outer-fold R2 averaged across all 13 tasks",
+  "representations": {
+    "attention": [
+      {"aggregate_set": "iqr_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.00969946},
+      {"aggregate_set": "mean_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.00942630}
+    ],
+    "p_factor": [
+      {"aggregate_set": "iqr_only", "correlation_threshold": 0.95, "cross_task_mean_r2": -0.00429552},
+      {"aggregate_set": "std_only", "correlation_threshold": 0.95, "cross_task_mean_r2": -0.00455569}
+    ],
+    "internalizing": [
+      {"aggregate_set": "std_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.05249147},
+      {"aggregate_set": "std_only", "correlation_threshold": "none", "cross_task_mean_r2": 0.05133340}
+    ],
+    "externalizing": [
+      {"aggregate_set": "median_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.03466261},
+      {"aggregate_set": "iqr_only", "correlation_threshold": 0.95, "cross_task_mean_r2": 0.03396085}
+    ]
+  },
+  "feature_family": "all",
+  "input_set": "eeg_confounds",
+  "models": ["ridge", "pls", "extratrees", "randomforest", "histgradientboosting", "svr"],
+  "svr_kernel": "rbf",
+  "selectors": ["f_regression", "mutual_info"],
+  "selector_k_max": 500,
+  "selection_metric": "negative RMSE",
+  "outer_folds": 5,
+  "inner_folds": 2,
+  "optuna_trials": 4,
+  "random_state": 42,
+  "expected_combinations_per_target": 156,
+  "expected_fold_markers_per_target": 780,
+  "expected_combinations_total": 624,
+  "expected_fold_markers_total": 3120
+}

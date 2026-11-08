@@ -1,0 +1,65 @@
+{
+  "phase": "E2A0",
+  "phase_name": "Frozen embedding audit and consolidation",
+  "version": "v1",
+  "purpose": "Prepare explicit task-level ML inputs without modifying source embeddings.",
+  "input_unit": "one subject-task recording represented by the mean of native 10-second epoch embeddings",
+  "targets_uri": "s3://hbn-ml-benchmark-tesi-ketrin/benchmark_v1/data/df_ml.parquet",
+  "targets": [
+    "attention",
+    "p_factor",
+    "internalizing",
+    "externalizing"
+  ],
+  "covariates": [
+    "age",
+    "sex"
+  ],
+  "representations": {
+    "cbramod": "embedding_benchmark_v1/e1a_frozen_v2/models/cbramod/embeddings/",
+    "biot": "embedding_benchmark_v1/e1a_frozen_v2/models/biot/embeddings/",
+    "labram_128_spatial": "embedding_benchmark_v1/e1b_frozen_v1/models/labram_128_spatial/embeddings/",
+    "eegpt_62_canonical": "embedding_benchmark_v1/e1c_eegpt_dual_v1/models/eegpt_62_canonical/embeddings/",
+    "eegpt_128_spatial": "embedding_benchmark_v1/e1c_eegpt_dual_v1/models/eegpt_128_spatial/embeddings/"
+  },
+  "expected_files_per_representation": 14066,
+  "expected_tasks": 13,
+  "output_layout": "representations/<representation>/tasks/<task>/{dataset.parquet,audit.json,done.json}",
+  "dataset_columns": {
+    "identity": [
+      "participant_id",
+      "task"
+    ],
+    "provenance": [
+      "n_epochs",
+      "source_embedding_key",
+      "source_embedding_etag",
+      "source_embedding_bytes",
+      "embedding_norm"
+    ],
+    "targets_and_covariates": [
+      "age",
+      "sex",
+      "attention",
+      "p_factor",
+      "internalizing",
+      "externalizing"
+    ],
+    "features": "embedding_0000 through embedding_NNNN"
+  },
+  "source_data_mutation": false,
+  "planned_e2a_models": [
+    "dummy",
+    "ridge",
+    "elasticnet",
+    "extratrees"
+  ],
+  "planned_metrics": [
+    "pearson",
+    "spearman",
+    "r2",
+    "mae",
+    "rmse",
+    "ccc"
+  ]
+}
