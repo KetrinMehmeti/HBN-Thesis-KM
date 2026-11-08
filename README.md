@@ -1,9 +1,5 @@
 # EEG-Based Prediction of Dimensional Psychopathology
 
-**Master's Thesis | Information Bioengineering | Politecnico di Milano**
-
-## Overview
-
 This project investigates how EEG representation strategies and spatial sampling influence the prediction of dimensional psychopathology in children and adolescents.
 
 Using the Healthy Brain Network EEG (HBN-EEG) dataset, the study benchmarks machine learning and deep learning approaches for predicting four continuous psychopathological dimensions: Attention, Internalizing, Externalizing, and the P-Factor.
@@ -21,19 +17,23 @@ The research explores four predictive approaches:
 
 The spatial sampling analysis further examines the effects of electrode reduction and montage selection on predictive performance.
 
+Repository Structure
+
+- 01_preprocessing/ — EEG preprocessing scripts, including ICA.
+
+- 02_classical_ml/ — Scripts for feature-based analysis and classical machine learning.
+
+- 03_neural_models/ — Scripts for pretrained EEG representations and neural modeling.
+
 ## Tools
 
-Python · scikit-learn · PyTorch · MNE-Python · AWS
+Python · scikit-learn · PyTorch · MNE-Python · AWS 
 
 ## Repository Contents
 
 This repository is intended to showcase selected implementations of the data processing, feature extraction, predictive modeling, and evaluation methods developed during the research.
 
-## Data Availability
-
-The project uses the HBN-EEG dataset. Participant-level data are not included in this repository, and access to the original recordings is subject to the dataset's terms of use.
-
 ## Author
 
 **Ketrin Mehmeti**
-MSc Information Bioengineering — Politecnico di Milano
+MSc Information Bioengineering | Politecnico di Milano
